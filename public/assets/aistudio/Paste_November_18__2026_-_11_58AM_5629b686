@@ -1,0 +1,1553 @@
+MASTER ENGINEERING PROMPT
+
+STYLAH DESIGNER & TECH FIRM
+
+Full-Stack Development | Native Android | React Website | Firebase Backend
+
+Act as a senior software architect, full-stack engineer, Android engineer, React engineer, Firebase specialist, cybersecurity engineer, DevOps engineer and technical SEO specialist.
+
+You are responsible for transforming the existing Google Stitch-generated UI design for Stylah Designer & Tech Firm into a complete, production-ready, functional, secure and deployable digital platform.
+
+This is not a request to create another mockup or a demonstration website.
+
+You must implement the actual application, connect the required services, establish the backend architecture, implement business logic, test the complete system and prepare both applications for deployment.
+
+You have engineering responsibility for the entire implementation.
+
+PART 1: CRITICAL PROJECT INSTRUCTIONS
+
+1.1 Preserve the existing Google Stitch design
+
+The project already contains a UI design generated using Google Stitch.
+
+Your first responsibility is to inspect the entire existing project, including:
+
+Existing source files.
+
+Component structure.
+
+Screen layouts.
+
+Navigation.
+
+Images and design assets.
+
+Typography.
+
+Colours.
+
+Spacing.
+
+Buttons.
+
+Icons.
+
+Responsive layouts.
+
+Existing interactions.
+
+Do not discard the existing design and generate a completely different interface.
+
+Do not unnecessarily redesign the application.
+
+Preserve the existing visual identity, component arrangements, screen hierarchy and user experience.
+
+Implement actual functionality behind the existing UI.
+
+You may make improvements only where necessary for:
+
+Accessibility.
+
+Mobile usability.
+
+Responsiveness.
+
+Performance.
+
+Security.
+
+Functional interactions.
+
+Technical consistency.
+
+The primary visual identity must remain:
+
+Primary red: #C8202F.
+
+White background: #FFFFFF.
+
+Dark charcoal: #202020.
+
+Light grey: #F5F5F5.
+
+The brand is Stylah Designer & Tech Firm.
+
+Use the actual company logo and existing project assets where available.
+
+Do not invent a replacement logo.
+
+1.2 Inspect before implementing
+
+Before making changes:
+
+Inspect the existing project structure.
+
+Identify the technologies already used.
+
+Identify all existing UI screens and components.
+
+Identify existing dependencies.
+
+Identify available assets.
+
+Identify missing screens and functionality.
+
+Prepare an implementation architecture.
+
+Identify potential technical limitations.
+
+Do not blindly overwrite existing files.
+
+Preserve working code wherever possible.
+
+Provide a concise initial technical assessment and then proceed with implementation.
+
+Do not stop after presenting a plan. Execute the implementation in the available development environment.
+
+If the environment cannot generate or manage both native Android and web projects in one workspace, create a clearly separated project structure or provide the exact integration-ready project artifacts and instructions required to complete the second application.
+
+Never pretend an application has been built when only a design or code outline exists.
+
+PART 2: OVERALL SYSTEM ARCHITECTURE
+
+Build two independent client applications connected to one shared Firebase backend.
+
+2.1 Application A: Native Android
+
+Technology:
+
+Kotlin.
+
+Jetpack Compose.
+
+Android Studio compatible project structure.
+
+Material 3 where appropriate.
+
+Firebase Android SDK.
+
+Kotlin Coroutines.
+
+ViewModel architecture.
+
+Navigation Compose.
+
+The Android application must be a genuine native Android application.
+
+It must not simply display the website inside a WebView.
+
+Implement:
+
+Native navigation.
+
+Native screens.
+
+Native form interactions.
+
+Native image selection.
+
+Native notifications.
+
+Native authentication.
+
+Native shopping experience.
+
+Native booking experience.
+
+Prepare the project to build an installable Android APK and a release-ready Android App Bundle (AAB).
+
+2.2 Application B: React website
+
+Technology:
+
+React.
+
+TypeScript.
+
+Next.js App Router.
+
+Modern CSS and reusable components.
+
+Firebase Web SDK.
+
+Server-side rendering where appropriate.
+
+Static generation for suitable public pages.
+
+The website must provide the same business functionality as the Android application where applicable.
+
+The website must be independently accessible through a public domain.
+
+It must be responsive across:
+
+Android phones.
+
+iPhones.
+
+Tablets.
+
+Laptops.
+
+Desktop computers.
+
+Preserve the mobile-first visual identity of the existing Stitch design.
+
+Do not introduce an unrelated website design.
+
+2.3 Shared backend
+
+Use one Firebase project for both applications.
+
+Recommended Firebase services:
+
+Firebase Authentication.
+
+Cloud Firestore.
+
+Firebase Storage.
+
+Cloud Functions for Firebase.
+
+Firebase Cloud Messaging.
+
+Firebase App Check.
+
+Firebase Hosting or Firebase App Hosting, depending on framework compatibility.
+
+Both clients must use the same data structures, business rules and authorization policies.
+
+Do not duplicate business records between Android and web.
+
+PART 3: FIREBASE BACKEND IMPLEMENTATION
+
+Set up a proper Firebase backend.
+
+3.1 Firebase Authentication
+
+Implement a complete customer authentication system.
+
+Required features:
+
+Customer registration.
+
+Email and password registration.
+
+Email and password login.
+
+Google sign-in.
+
+Password reset.
+
+Email verification.
+
+Logout.
+
+Session persistence.
+
+Authentication state management.
+
+Protected account screens.
+
+Use Firebase Authentication.
+
+For Android, use the appropriate native Firebase authentication integration.
+
+For the website, use Firebase Authentication through the web SDK.
+
+Ensure that both applications recognize the same Firebase user accounts.
+
+Do not store plaintext passwords.
+
+Do not implement your own insecure password storage.
+
+3.2 User profiles
+
+Create a user profile collection.
+
+Suggested structure:
+
+users/{userId}
+
+Fields:
+
+uid.
+
+fullName.
+
+email.
+
+phoneNumber.
+
+profileImage.
+
+role.
+
+accountStatus.
+
+createdAt.
+
+updatedAt.
+
+Roles should include:
+
+customer.
+
+staff.
+
+admin.
+
+Never allow customers to promote themselves to staff or administrators.
+
+Role assignment must be controlled through trusted backend operations.
+
+3.3 Cloud Firestore database
+
+Design a normalized and maintainable Firestore structure.
+
+Create collections for:
+
+users.
+
+products.
+
+categories.
+
+services.
+
+orders.
+
+bookings.
+
+quotations.
+
+projects.
+
+reviews.
+
+favourites.
+
+notifications.
+
+promotions.
+
+settings.
+
+paymentTransactions.
+
+inventory.
+
+Use document references and appropriate subcollections where necessary.
+
+Every business record should include appropriate timestamps and ownership information.
+
+Use server timestamps for important transactions.
+
+Design the schema to support future expansion.
+
+3.4 Firebase Storage
+
+Use Firebase Storage for:
+
+Product images.
+
+Product galleries.
+
+Service photographs.
+
+Portfolio photographs.
+
+Customer-uploaded project images.
+
+Profile images.
+
+Implement:
+
+Image validation.
+
+File size restrictions.
+
+Secure upload permissions.
+
+File type restrictions.
+
+Appropriate access rules.
+
+Do not store large images as Base64 strings inside Firestore.
+
+Use optimized image formats and appropriate image sizes.
+
+PART 4: PRODUCT MANAGEMENT AND E-COMMERCE
+
+Implement a complete product catalogue.
+
+The business sells products and provides services relating to:
+
+Wallpapers.
+
+Wall murals.
+
+Interior decorations.
+
+Exterior decorations.
+
+Lighting and chandeliers.
+
+CCTV cameras and security systems.
+
+Electrical installations.
+
+Home and office accessories.
+
+Other technical products.
+
+4.1 Product functionality
+
+Each product must support:
+
+Product name.
+
+Slug.
+
+Description.
+
+Category.
+
+Product images.
+
+Price in KSh.
+
+Discounted price where applicable.
+
+Available variations.
+
+Product specifications.
+
+Stock quantity.
+
+Availability status.
+
+Featured status.
+
+Search keywords.
+
+Creation and modification dates.
+
+Implement:
+
+Product browsing.
+
+Product search.
+
+Category filtering.
+
+Price sorting.
+
+Product details.
+
+Related products.
+
+Favourite products.
+
+Add to cart.
+
+Quantity selection.
+
+Products must come from Firestore, not hardcoded demonstration arrays.
+
+Use real database queries and handle empty states.
+
+4.2 Shopping cart
+
+Create a persistent shopping cart.
+
+Support:
+
+Adding products.
+
+Removing products.
+
+Changing quantities.
+
+Calculating subtotals.
+
+Calculating applicable discounts.
+
+Delivery fee handling.
+
+Calculating final totals.
+
+Ensure that prices are revalidated on the backend during checkout.
+
+Never trust the price supplied by the client application.
+
+4.3 Orders
+
+Create a complete order management system.
+
+An order should contain:
+
+Order reference.
+
+Customer ID.
+
+Customer details.
+
+Products ordered.
+
+Quantities.
+
+Unit prices.
+
+Subtotal.
+
+Delivery charges.
+
+Total.
+
+Payment status.
+
+Order status.
+
+Delivery information.
+
+Created timestamp.
+
+Order statuses should include:
+
+Pending.
+
+Awaiting payment.
+
+Confirmed.
+
+Processing.
+
+Ready for dispatch.
+
+Dispatched.
+
+Delivered.
+
+Cancelled.
+
+Customers must be able to view their order history and order status.
+
+Administrators must be able to manage orders.
+
+Use backend transactions where appropriate to prevent inconsistent stock and order updates.
+
+PART 5: CHECKOUT AND KENYAN PAYMENT INTEGRATION
+
+The application targets Kenyan customers.
+
+All currency must be displayed in Kenyan Shillings (KSh).
+
+5.1 M-Pesa integration
+
+Prepare a secure M-Pesa Daraja API integration.
+
+Implement the appropriate payment workflow, including:
+
+Customer phone number.
+
+Checkout amount.
+
+STK Push initiation.
+
+Payment request reference.
+
+Payment callback processing.
+
+Payment confirmation.
+
+Failed payment handling.
+
+Pending payment handling.
+
+Transaction records.
+
+Important security requirements:
+
+M-Pesa consumer keys, consumer secrets, passkeys and other sensitive credentials must NEVER be exposed in:
+
+React source code.
+
+Android source code.
+
+Public environment variables.
+
+Client-side JavaScript.
+
+Public GitHub repositories.
+
+All sensitive payment operations must execute through secure backend functions.
+
+Verify payment callbacks and transaction details before marking orders as paid.
+
+Do not trust a client-side success message.
+
+Use idempotent payment processing to prevent duplicate payment records.
+
+Support sandbox testing before production activation.
+
+If actual credentials have not been provided, implement the integration structure and clearly identify the missing configuration.
+
+Never invent API credentials.
+
+5.2 Other payment methods
+
+Prepare the architecture to support additional payment methods where configured.
+
+These may include:
+
+Card payments.
+
+Cash on delivery.
+
+Do not display unsupported payment methods as though they are operational.
+
+PART 6: SERVICE BOOKING AND QUOTATION MANAGEMENT
+
+The company provides:
+
+Wallpaper installation.
+
+Wall mural installation.
+
+Interior decoration.
+
+Exterior decoration.
+
+Lighting installation.
+
+Chandelier installation.
+
+CCTV installation.
+
+Electrical services.
+
+Home and office improvement.
+
+Other technical services.
+
+Implement a real service management system.
+
+6.1 Service details
+
+Every service must support:
+
+Service title.
+
+Description.
+
+Service photographs.
+
+Category.
+
+Benefits.
+
+Estimated pricing where available.
+
+Availability.
+
+Booking instructions.
+
+6.2 Booking system
+
+Customers must be able to:
+
+Browse services.
+
+Open service details.
+
+Request a consultation.
+
+Request a quotation.
+
+Submit project descriptions.
+
+Select preferred appointment dates.
+
+Enter their location.
+
+Upload project photographs.
+
+Submit booking requests.
+
+Track request status.
+
+Booking fields:
+
+Customer name.
+
+Phone number.
+
+Email address.
+
+Location or town.
+
+Service requested.
+
+Project description.
+
+Preferred date.
+
+Optional image attachments.
+
+Use Kenyan phone number formatting.
+
+6.3 Quotation management
+
+Create a quotation workflow.
+
+Administrators should be able to:
+
+View incoming requests.
+
+Review customer information.
+
+Review uploaded photographs.
+
+Provide quotation details.
+
+Update quotation status.
+
+Send a response.
+
+Customers should be able to view their quotation requests and their current status.
+
+PART 7: COMPANY PORTFOLIO
+
+Create a dynamic company portfolio.
+
+Administrators should be able to upload and manage projects.
+
+Project information should include:
+
+Project title.
+
+Project category.
+
+Location.
+
+Description.
+
+Project photographs.
+
+Completion date where applicable.
+
+Featured status.
+
+Customers should be able to browse completed projects and view their photographs.
+
+Do not invent actual completed projects or claim fictional projects are real.
+
+Use clearly identified demonstration content until the company supplies its portfolio.
+
+PART 8: COMMUNICATION AND NOTIFICATIONS
+
+8.1 WhatsApp
+
+Integrate WhatsApp contact functionality.
+
+Customers should be able to initiate enquiries from:
+
+Product pages.
+
+Service pages.
+
+Quotation pages.
+
+Contact page.
+
+Where possible, prepare contextual WhatsApp messages containing product or service information.
+
+Use a configurable business WhatsApp number.
+
+Do not invent the company's phone number.
+
+8.2 Email
+
+Implement transactional email integration through a suitable email provider.
+
+Prepare email notifications for:
+
+New account registration.
+
+Email verification.
+
+Order confirmation.
+
+Payment confirmation.
+
+Booking submission.
+
+Quotation response.
+
+Order status updates.
+
+Password reset where appropriate.
+
+Email provider credentials must remain on the server.
+
+8.3 Push notifications
+
+Implement Firebase Cloud Messaging.
+
+Support notifications for:
+
+Order confirmation.
+
+Payment confirmation.
+
+Booking updates.
+
+Quotation updates.
+
+Important announcements.
+
+Ask for notification permission appropriately.
+
+PART 9: ADMINISTRATION SYSTEM
+
+A functioning business platform requires a proper administration interface.
+
+Build a secure administration dashboard within the web application.
+
+The dashboard must be protected by server-verified administrator permissions.
+
+Include:
+
+Dashboard overview
+
+Total orders.
+
+Pending orders.
+
+Completed orders.
+
+Total customers.
+
+Product count.
+
+Low-stock products.
+
+Pending service requests.
+
+Pending quotations.
+
+Recent activity.
+
+Product management
+
+Add products.
+
+Edit products.
+
+Delete or archive products.
+
+Upload photographs.
+
+Manage categories.
+
+Update prices.
+
+Update stock.
+
+Mark featured products.
+
+Order management
+
+View orders.
+
+Open order details.
+
+Update order status.
+
+Verify payment records.
+
+Manage fulfilment.
+
+Service management
+
+Add services.
+
+Edit services.
+
+Manage service availability.
+
+Booking management
+
+View customer requests.
+
+Update booking status.
+
+Respond to quotations.
+
+Review uploaded attachments.
+
+Portfolio management
+
+Add projects.
+
+Edit projects.
+
+Upload project photographs.
+
+Publish or unpublish projects.
+
+Customer management
+
+View registered customers.
+
+View relevant customer order histories.
+
+Manage account status where authorized.
+
+Implement proper audit logging for important administrative operations.
+
+Never allow an ordinary customer to access administrative functionality by changing a URL or modifying client-side state.
+
+PART 10: SECURITY AND DATA PROTECTION
+
+Security is mandatory.
+
+Implement the following:
+
+Firebase Authentication.
+
+Firestore Security Rules.
+
+Firebase Storage Security Rules.
+
+Firebase App Check.
+
+Server-side authorization.
+
+Input validation.
+
+Output sanitization.
+
+Protected API endpoints.
+
+Rate limiting for sensitive endpoints.
+
+Secure payment processing.
+
+Role-based access control.
+
+Safe error handling.
+
+Protection against unauthorized data access.
+
+Protection against duplicate transactions.
+
+Secure environment configuration.
+
+Customers must only access their own private account information, orders, bookings and quotations.
+
+Public visitors may read only published products, categories, services and portfolio projects.
+
+Administrative actions must require verified administrative authorization.
+
+Do not use insecure open Firestore rules such as allowing unrestricted reads and writes to everyone.
+
+Do not put secrets in source code.
+
+Do not expose Firebase Admin SDK credentials to client applications.
+
+Create production-ready security rules and test them.
+
+PART 11: TECHNICAL SEO — PUBLIC WEBSITE
+
+SEO is a major requirement.
+
+The public website must be optimized for search engines, particularly Google Search, with a focus on customers in Kenya.
+
+Use Next.js server-side rendering and static generation for public-facing content where appropriate.
+
+Do not rely exclusively on client-side rendering for important SEO pages.
+
+11.1 Keyword strategy
+
+Prioritize commercially relevant Kenyan search terms.
+
+Examples:
+
+Wallpapers in Kenya.
+
+Wallpaper installation in Kenya.
+
+Wall murals in Kenya.
+
+Interior design in Kenya.
+
+Interior decoration services Kenya.
+
+Exterior decoration Kenya.
+
+Chandeliers in Kenya.
+
+Lighting installation Kenya.
+
+CCTV installation in Kenya.
+
+Home decoration services Kenya.
+
+Office interior decoration Kenya.
+
+Use these keywords naturally.
+
+Do not stuff keywords into page content.
+
+Build individual landing pages for important product and service categories.
+
+Where business locations are verified, create relevant location-specific pages.
+
+Do not fabricate physical business addresses or claim service coverage in locations that the company has not confirmed.
+
+11.2 Metadata
+
+Implement unique SEO metadata for:
+
+Homepage.
+
+Product category pages.
+
+Individual product pages.
+
+Service pages.
+
+Individual service pages.
+
+Portfolio pages.
+
+Company information.
+
+Contact page.
+
+Include:
+
+SEO title.
+
+Meta description.
+
+Canonical URL.
+
+Open Graph metadata.
+
+Social sharing metadata.
+
+Relevant image metadata.
+
+Use meaningful URL slugs.
+
+11.3 SEO files
+
+Generate and configure:
+
+sitemap.xml.
+
+robots.txt.
+
+Appropriate canonical URLs.
+
+Web manifest.
+
+Favicon assets.
+
+Open Graph images.
+
+Structured data.
+
+Ensure sitemap.xml contains actual published public pages.
+
+Do not include private account pages, checkout pages, admin routes or unpublished content in the sitemap.
+
+Update the sitemap automatically as public products and services are added or removed, using an appropriate dynamic sitemap implementation.
+
+11.4 Structured data
+
+Implement appropriate Schema.org structured data.
+
+Where applicable:
+
+Organization.
+
+WebSite.
+
+BreadcrumbList.
+
+Product.
+
+Service.
+
+Offer.
+
+Only publish ratings, reviews, prices, contact information and addresses that are supported by actual business data.
+
+Do not generate fake review ratings.
+
+11.5 Local SEO
+
+Optimize for the Kenyan market.
+
+Use:
+
+Kenyan spelling and conventions where appropriate.
+
+KSh pricing.
+
++254 contact formatting.
+
+Verified business information.
+
+Relevant Kenyan service locations.
+
+Prepare the website for Google Search Console verification.
+
+Prepare appropriate Google Analytics integration, subject to configuration and privacy requirements.
+
+11.6 Performance and accessibility
+
+Optimize:
+
+Core Web Vitals.
+
+Largest Contentful Paint.
+
+Cumulative Layout Shift.
+
+Interaction to Next Paint.
+
+Image loading.
+
+Image compression.
+
+Responsive images.
+
+Font loading.
+
+Accessibility.
+
+Semantic HTML.
+
+Use descriptive image alt text.
+
+Do not claim guaranteed first-page Google rankings. Build technically sound SEO foundations.
+
+PART 12: ANDROID APPLICATION REQUIREMENTS
+
+The Android application must be fully native.
+
+Implement:
+
+Kotlin.
+
+Jetpack Compose.
+
+Material 3.
+
+Firebase Authentication.
+
+Firestore integration.
+
+Firebase Storage.
+
+Firebase Cloud Messaging.
+
+Navigation Compose.
+
+ViewModels.
+
+Repository architecture.
+
+Coroutines.
+
+Proper loading and error states.
+
+Implement all major business screens.
+
+Ensure:
+
+Proper Android back navigation.
+
+Persistent authentication.
+
+Native image selection.
+
+Network error handling.
+
+Internet connection handling.
+
+Form validation.
+
+Accessible touch targets.
+
+Responsive layouts for different Android screen sizes.
+
+Prepare:
+
+Debug APK.
+
+Release APK configuration.
+
+Android App Bundle configuration.
+
+Application ID configuration.
+
+App icon.
+
+Splash screen.
+
+Version management.
+
+Signing configuration.
+
+Do not expose release signing credentials.
+
+The app must be independently installable and must not depend on opening the React website inside a WebView.
+
+PART 13: WEB HOSTING AND DEPLOYMENT
+
+Prepare the website for production deployment.
+
+Preferred hosting:
+
+Firebase App Hosting for a compatible Next.js implementation, or Firebase Hosting with an appropriate deployment architecture.
+
+Prepare:
+
+Production build.
+
+Environment configuration.
+
+Firebase configuration.
+
+Domain configuration.
+
+HTTPS.
+
+Redirect handling.
+
+Error pages.
+
+Deployment documentation.
+
+Use environment variables appropriately.
+
+Never commit production secrets.
+
+The project must be ready for deployment to a custom domain once the company supplies the domain and configures DNS.
+
+Do not claim the site is publicly deployed unless deployment has actually succeeded.
+
+PART 14: TESTING AND QUALITY ASSURANCE
+
+You must test the application, not merely generate code.
+
+14.1 Website testing
+
+Test:
+
+Homepage loading.
+
+Navigation.
+
+Product browsing.
+
+Search.
+
+Product details.
+
+Shopping cart.
+
+Checkout validation.
+
+Authentication.
+
+Google sign-in.
+
+Service browsing.
+
+Booking submission.
+
+Quotation requests.
+
+Portfolio navigation.
+
+Account pages.
+
+Admin authorization.
+
+Mobile responsiveness.
+
+14.2 Android testing
+
+Test:
+
+Application launch.
+
+Navigation.
+
+Authentication.
+
+Product browsing.
+
+Cart operations.
+
+Checkout.
+
+Booking.
+
+Image uploads.
+
+Notifications.
+
+Account management.
+
+Error handling.
+
+14.3 Backend testing
+
+Test:
+
+Firestore queries.
+
+Database writes.
+
+Security rules.
+
+Authentication permissions.
+
+Storage permissions.
+
+Cloud Functions.
+
+Payment callbacks.
+
+Duplicate payment prevention.
+
+Role authorization.
+
+14.4 Integration testing
+
+Verify that:
+
+A customer registered on Android can log in on the website.
+
+An order created on Android appears on the website administration dashboard.
+
+An order created on the website is accessible through the Android account.
+
+Product changes made by an administrator appear on both platforms.
+
+Booking requests from both platforms reach the same database.
+
+Payment status is synchronized.
+
+Notifications are delivered appropriately.
+
+Fix all identified critical and high-priority defects.
+
+Do not silently ignore failed tests.
+
+PART 15: DEVELOPMENT WORKFLOW
+
+Work systematically.
+
+Phase 1: Project inspection
+
+Inspect the imported Stitch project and report its existing structure.
+
+Phase 2: Architecture
+
+Establish the shared Firebase backend and the separate web and Android client architectures.
+
+Phase 3: Database and authentication
+
+Implement Firestore, authentication, storage and security rules.
+
+Phase 4: Website development
+
+Implement the complete React/Next.js website while preserving the Stitch design.
+
+Phase 5: Native Android development
+
+Implement the Kotlin application with equivalent business functionality and consistent branding.
+
+Phase 6: Business functionality
+
+Implement products, cart, orders, checkout, bookings, quotations, portfolio and administration.
+
+Phase 7: External integrations
+
+Implement M-Pesa, WhatsApp, email and notifications.
+
+Phase 8: SEO and performance
+
+Implement all SEO requirements and optimize the website.
+
+Phase 9: Testing
+
+Run unit, integration, security and end-to-end tests.
+
+Phase 10: Deployment preparation
+
+Prepare website hosting and Android release builds.
+
+Do not skip phases simply to produce a quick demonstration.
+
+If a phase depends on missing external credentials, continue with the parts that can be implemented and clearly identify the remaining configuration.
+
+PART 16: ENGINEERING RULES
+
+These rules are mandatory.
+
+Do not replace the existing Stitch design without a strong technical reason.
+
+Do not generate a fake functional prototype.
+
+Do not use hardcoded mock products as the production data source.
+
+Do not use fake authentication.
+
+Do not simulate successful payments.
+
+Do not expose API keys or secrets.
+
+Do not use insecure database rules.
+
+Do not invent company contact information.
+
+Do not invent actual business locations.
+
+Do not invent customer reviews.
+
+Do not claim integrations work before testing them.
+
+Do not leave important buttons without working actions.
+
+Do not leave important forms without validation.
+
+Do not ignore loading, empty and error states.
+
+Do not overwrite functioning components unnecessarily.
+
+Do not stop after building only the homepage.
+
+Do not claim deployment succeeded unless it actually succeeded.
+
+Maintain clean, modular, documented and maintainable code.
+
+Use consistent TypeScript and Kotlin coding standards.
+
+Document every external configuration required.
+
+If you encounter a technical limitation, explain it and implement the best supported alternative without silently changing the architecture.
+
+PART 17: FINAL DELIVERABLES
+
+At completion, provide:
+
+Complete React/Next.js website source code.
+
+Complete Kotlin Android source code.
+
+Shared Firebase backend implementation.
+
+Firestore database structure.
+
+Firestore security rules.
+
+Firebase Storage security rules.
+
+Cloud Functions source code.
+
+Authentication implementation.
+
+M-Pesa integration implementation.
+
+Email and WhatsApp integration implementation.
+
+SEO implementation.
+
+sitemap.xml.
+
+robots.txt.
+
+Web manifest.
+
+Android APK build instructions.
+
+Android AAB build instructions.
+
+Website deployment instructions.
+
+Environment variables documentation.
+
+Testing report.
+
+Production readiness report.
+
+FINAL ACCEPTANCE CRITERIA
+
+The project is not considered complete merely because it compiles or displays attractive screens.
+
+The following must be verified:
+
+The website loads correctly.
+
+The native Android application builds.
+
+Both clients connect to the same Firebase project.
+
+Authentication works.
+
+Product data is dynamic.
+
+Cart calculations work.
+
+Order creation works.
+
+Service requests work.
+
+Administrative authorization works.
+
+Security rules are enforced.
+
+Payment integration is correctly implemented and tested in the available sandbox.
+
+Public website pages have SEO metadata.
+
+sitemap.xml and robots.txt are accessible.
+
+The website is responsive.
+
+The Android app can be installed.
+
+Important user journeys pass testing.
+
+Provide a final engineering report with three categories:
+
+WORKING AND VERIFIED: Features that have actually passed testing.
+
+IMPLEMENTED BUT AWAITING CONFIGURATION: Features that need actual company credentials, domain details or third-party account setup.
+
+NOT COMPLETED: Features that remain unfinished, including the reason.
+
+Never mark an untested feature as verified.
+
+Your responsibility is to engineer a real, secure and maintainable digital platform for Stylah Designer & Tech Firm.
+
+Begin by inspecting the imported Google Stitch project, preserving its design and preparing the implementation architecture. Then proceed with the actual development.

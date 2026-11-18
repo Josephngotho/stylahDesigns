@@ -1,0 +1,203 @@
+---
+name: Atelier Crimson
+colors:
+  surface: '#fcf9f8'
+  surface-dim: '#dcd9d9'
+  surface-bright: '#fcf9f8'
+  surface-container-lowest: '#ffffff'
+  surface-container-low: '#f6f3f2'
+  surface-container: '#f0eded'
+  surface-container-high: '#eae7e7'
+  surface-container-highest: '#e5e2e1'
+  on-surface: '#1b1c1c'
+  on-surface-variant: '#5a403f'
+  inverse-surface: '#303030'
+  inverse-on-surface: '#f3f0ef'
+  outline: '#8e706e'
+  outline-variant: '#e2bebc'
+  surface-tint: '#b5232d'
+  primary: '#820014'
+  on-primary: '#ffffff'
+  primary-container: '#a81825'
+  on-primary-container: '#ffb9b5'
+  inverse-primary: '#ffb3af'
+  secondary: '#006d38'
+  on-secondary: '#ffffff'
+  secondary-container: '#74f9a0'
+  on-secondary-container: '#00723a'
+  tertiary: '#00491d'
+  on-tertiary: '#ffffff'
+  tertiary-container: '#00632a'
+  on-tertiary-container: '#42e676'
+  error: '#ba1a1a'
+  on-error: '#ffffff'
+  error-container: '#ffdad6'
+  on-error-container: '#93000a'
+  primary-fixed: '#ffdad7'
+  primary-fixed-dim: '#ffb3af'
+  on-primary-fixed: '#410006'
+  on-primary-fixed-variant: '#930018'
+  secondary-fixed: '#77fca3'
+  secondary-fixed-dim: '#59df89'
+  on-secondary-fixed: '#00210d'
+  on-secondary-fixed-variant: '#005228'
+  tertiary-fixed: '#66ff8e'
+  tertiary-fixed-dim: '#3de273'
+  on-tertiary-fixed: '#002109'
+  on-tertiary-fixed-variant: '#005322'
+  background: '#fcf9f8'
+  on-background: '#1b1c1c'
+  surface-variant: '#e5e2e1'
+typography:
+  display-lg:
+    fontFamily: Outfit
+    fontSize: 32px
+    fontWeight: '600'
+    lineHeight: 40px
+    letterSpacing: -0.02em
+  headline-lg:
+    fontFamily: Outfit
+    fontSize: 26px
+    fontWeight: '600'
+    lineHeight: 34px
+    letterSpacing: -0.015em
+  headline-md:
+    fontFamily: Outfit
+    fontSize: 20px
+    fontWeight: '600'
+    lineHeight: 28px
+  headline-sm:
+    fontFamily: Outfit
+    fontSize: 18px
+    fontWeight: '500'
+    lineHeight: 24px
+  body-lg:
+    fontFamily: DM Sans
+    fontSize: 16px
+    fontWeight: '400'
+    lineHeight: 24px
+  body-md:
+    fontFamily: DM Sans
+    fontSize: 14px
+    fontWeight: '400'
+    lineHeight: 20px
+  body-sm:
+    fontFamily: DM Sans
+    fontSize: 12px
+    fontWeight: '400'
+    lineHeight: 16px
+  label-lg:
+    fontFamily: DM Sans
+    fontSize: 14px
+    fontWeight: '600'
+    lineHeight: 20px
+    letterSpacing: 0.01em
+  label-md:
+    fontFamily: DM Sans
+    fontSize: 12px
+    fontWeight: '500'
+    lineHeight: 16px
+    letterSpacing: 0.02em
+  label-sm:
+    fontFamily: DM Sans
+    fontSize: 11px
+    fontWeight: '600'
+    lineHeight: 14px
+    letterSpacing: 0.03em
+  price-display:
+    fontFamily: Outfit
+    fontSize: 18px
+    fontWeight: '700'
+    lineHeight: 24px
+    letterSpacing: -0.01em
+rounded:
+  sm: 0.125rem
+  DEFAULT: 0.25rem
+  md: 0.375rem
+  lg: 0.5rem
+  xl: 0.75rem
+  full: 9999px
+spacing:
+  gutter: 1rem
+  margin: 1rem
+  space-xs: 0.25rem
+  space-sm: 0.5rem
+  space-md: 1rem
+  space-lg: 1.5rem
+  space-xl: 2rem
+---
+
+## Brand & Style
+
+The design system establishes an elevated architectural aesthetic tailored for high-end interior spaces, smart finishings, and digital design services. Balancing tactile craftsmanship with fluid commerce, the visual language merges modern minimalism with refined physical product cards.
+
+Designed primarily for mobile Android experiences within an active East African market, the interface projects precision, reliability, and bespoke luxury. High-contrast structure, crisp hairline boundaries, and restrained scarlet accents build immediate trust for large-ticket architectural finishes, decor purchases, and professional interior consultations.
+
+## Colors
+
+The palette centers on a disciplined crimson tone (`#A81825`) as the primary brand signature, representing craft, passion, and authority. Crisp architectural neutrals anchor the layout: pure canvas white (`#FFFFFF`) with staggered off-white foundational surfaces (`#F8F9FA` and `#F5F5F5`), bound by low-contrast borders (`#E5E7EB`). Charcoal text (`#202020`) replaces harsh absolute black to maintain warmth and editorial readability.
+
+Regional commerce and communication triggers integrate distinct functional accents:
+- **Primary Brand:** Deep Crimson (`#A81825`) applied to primary call-to-actions, active tab indicators, and essential navigation highlights.
+- **Transactional Accent:** M-Pesa Green (`#00A859`) reserved specifically for payment prompts, balance verification, and checkout completion milestones.
+- **Direct Support Channel:** WhatsApp Emerald (`#25D366`) designated strictly for immediate design consultation links, direct contractor messaging, and real-time support triggers.
+- **Surface Scale:** Surface Base (`#FFFFFF`), Surface Alt (`#F8F9FA`), and Surface Raised (`#F5F5F5`).
+
+## Typography
+
+The typographic hierarchy balances architectural geometric presence with pragmatic mobile readability:
+- **Headlines (Outfit):** Delivers clean, contemporary proportions evoking modern spatial design and showroom clarity. Display weights use tight letter-spacing to command immediate visual focus without excessive visual bulk.
+- **Body & Controls (DM Sans):** Selected for its neutral, highly legible rhythm across small-format handheld screens. Maintains consistent legibility across long interior specifications, bill of quantities, and order details.
+- **Currency & Numerics:** Product prices and quotation figures use `price-display` (Outfit Semibold/Bold) prepended with standard regional currency formatting (`KSh 12,500`), keeping monetary metrics clear and prominent.
+
+## Layout & Spacing
+
+The layout is built upon an 8pt-derived rhythm optimized for 360dp–412dp Android viewports. A 4-column fluid layout with `16px` (`1rem`) gutters and outer margins forms the structural foundation.
+
+Key spatial rules:
+- **Touch Boundaries:** All interactive components (navigation items, quantity steppers, action buttons) strictly enforce a minimum touch target size of 48×48dp, even when the visible glyph or badge is smaller.
+- **Vertical Spacing:** Modules adhere strictly to `space-md` (16px) for interior card grouping, `space-lg` (24px) between distinct contextual sections, and `space-xl` (32px) for page transitions and primary headline anchors.
+- **Sticky Screen Safe Areas:** Mobile templates account for a 64dp top application bar and an 80dp bottom navigation bar, with content pads cleared to prevent scrolling overlap.
+
+## Elevation & Depth
+
+Visual hierarchy leverages low-contrast structural boundaries paired with soft, highly diffused ambient drop shadows rather than heavy skeuomorphic layers.
+
+- **Level 0 (Flat Ground):** Pure background surfaces (`#FFFFFF` or `#F8F9FA`) with no elevation.
+- **Level 1 (Cards & Product Tiles):** `#FFFFFF` surfaces bounded by a 1px hairline border (`#E5E7EB`) and an ambient drop shadow: `0px 2px 6px rgba(32, 32, 32, 0.04)`.
+- **Level 2 (Dropdowns & Floating Actions):** Raised tactile elements using `0px 4px 16px rgba(32, 32, 32, 0.08)`.
+- **Level 3 (Modal Sheets & Sticky Navigation):** Grounded floating layers using `0px -2px 12px rgba(32, 32, 32, 0.06)`, providing clear separation from underlying dynamic catalog feeds without overwhelming the primary content.
+
+## Shapes
+
+The design system adopts a soft, architectural corner treatment (`roundedness: 1`), instilling an aesthetic of machined precision and fine interior cabinetry:
+- **Standard Controls & Text Fields:** 4px (`0.25rem`) corner radius for inputs, text containers, and segmented control chips.
+- **Cards & Visual Containers:** 8px (`0.5rem`, `rounded-lg`) corner radius for catalog tiles, service quotation modules, and bottom sheet containers.
+- **Status Badges & Category Pills:** 12px (`0.75rem`, `rounded-xl`) or fully circular pills for tags, product availability indicators, and counter badges.
+
+## Components
+
+### Buttons
+- **Primary Button:** Solid deep crimson (`#A81825`) with pure white text, 48dp minimum height, 4px border radius. Used for booking consultations, adding items to cart, and progressing checkout.
+- **Secondary / M-Pesa Checkout Button:** Solid brand green (`#00A859`) with white text, exclusively used for the final "Pay via M-Pesa" action.
+- **WhatsApp Direct Action:** Compact or full-width button featuring a subtle background tint (`#E8FBF0`), green text (`#25D366`), and the WhatsApp icon for immediate design advice.
+- **Outlined Button:** Transparent fill, 1px border (`#E5E7EB`), text `#202020`. Used for secondary actions (e.g., "View Specifications").
+
+### Sticky Bottom Navigation (5 Tabs)
+- Fixed 80dp dock with subtle top border (`#E5E7EB`) and elevation level 3.
+- Five equidistant tabs: **Home**, **Shop**, **Cart** (with pill counter badge in `#A81825`), **Services**, and **Account**.
+- Inactive state: `#6B7280` icon and label. Active state: `#A81825` with filled icon variant and bold label.
+
+### Cards (Product & Service)
+- Built on `#FFFFFF` with 8px radius and a 1px border in `#E5E7EB`.
+- Product images use a constrained 1:1 or 4:3 aspect ratio with an off-white background (`#F8F9FA`).
+- Typography grouping inside the card: category badge, product title, and bold price token in Outfit (`KSh XX,XXX`).
+
+### Chips & Filter Pills
+- Horizontally scrollable filter rails with 48dp tap zones.
+- Unselected: Surface `#F5F5F5`, text `#202020`.
+- Selected: Background `#A81825`, text `#FFFFFF`.
+
+### Form Inputs & Selectors
+- Height 48dp, 1px border (`#E5E7EB`), focus state shifts to a 1.5px `#A81825` border with zero outline ring.
+- Top-aligned mini labels for field clarity during typing.

@@ -1,0 +1,44 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    function isSignedIn() {
+      return request.auth != null && request.auth.token.email_verified == true;
+    }
+
+    function isAdminEmail() {
+      return isSignedIn() && (
+        request.auth.token.email == 'stylahindustries297@gmail.com' ||
+        request.auth.token.email == 'josephngotho988@gmail.com'
+      );
+    }
+
+    function isValidImage() {
+      return request.resource != null
+        && request.resource.size <= 5 * 1024 * 1024
+        && request.resource.contentType.matches('image/(jpeg|png|webp|avif)');
+    }
+
+    // Publicly readable catalog & portfolio imagery (admin-managed uploads)
+    match /catalog/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAdminEmail() && isValidImage();
+    }
+
+    // Customer booking / quotation project photos (isolated by UID)
+    match /bookings/{userId}/{allPaths=**} {
+      allow read: if isSignedIn() && (request.auth.uid == userId || isAdminEmail());
+      allow write: if isSignedIn() && request.auth.uid == userId && isValidImage();
+    }
+
+    // Profile avatars (isolated by UID)
+    match /profiles/{userId}/{allPaths=**} {
+      allow read: if isSignedIn() && (request.auth.uid == userId || isAdminEmail());
+      allow write: if isSignedIn() && request.auth.uid == userId && isValidImage();
+    }
+
+    // Deny everything else
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -1,0 +1,465 @@
+{
+  "entities": {
+    "UserAccount": {
+      "title": "UserAccount",
+      "description": "Registered customer, staff, or administrator account record.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "fullName": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "profileImage": { "type": "string", "maxLength": 500 },
+        "role": { "type": "string", "enum": ["customer", "staff", "admin"] },
+        "accountStatus": { "type": "string", "enum": ["active", "suspended"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "fullName", "role", "accountStatus", "createdAt", "updatedAt"]
+    },
+    "UserPrivateInfo": {
+      "title": "UserPrivateInfo",
+      "description": "Owner-isolated PII for user contact, delivery address, and FCM push token.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "email": { "type": "string", "maxLength": 160 },
+        "phoneNumber": { "type": "string", "maxLength": 20, "pattern": "^(\\+254|0)[17]\\d{8}$" },
+        "deliveryTown": { "type": "string", "maxLength": 100 },
+        "deliveryAddress": { "type": "string", "maxLength": 300 },
+        "fcmToken": { "type": "string", "maxLength": 400 },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "updatedAt"]
+    },
+    "Category": {
+      "title": "Category",
+      "description": "Product and service taxonomy category.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "name": { "type": "string", "minLength": 2, "maxLength": 80 },
+        "slug": { "type": "string", "minLength": 2, "maxLength": 80, "pattern": "^[a-z0-9\\-]+$" },
+        "type": { "type": "string", "enum": ["product", "service", "both"] },
+        "description": { "type": "string", "maxLength": 400 },
+        "imageUrl": { "type": "string", "maxLength": 500 },
+        "sortOrder": { "type": "number" },
+        "published": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "name", "slug", "type", "sortOrder", "published", "createdAt", "updatedAt"]
+    },
+    "Product": {
+      "title": "Product",
+      "description": "E-commerce product item priced in KSh.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "name": { "type": "string", "minLength": 2, "maxLength": 140 },
+        "slug": { "type": "string", "minLength": 2, "maxLength": 140, "pattern": "^[a-z0-9\\-]+$" },
+        "description": { "type": "string", "minLength": 5, "maxLength": 3000 },
+        "categoryId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "categoryName": { "type": "string", "minLength": 2, "maxLength": 80 },
+        "priceKsh": { "type": "number" },
+        "discountedPriceKsh": { "type": "number" },
+        "stockQty": { "type": "number" },
+        "availabilityStatus": { "type": "string", "enum": ["in_stock", "low_stock", "out_of_stock", "pre_order"] },
+        "featured": { "type": "boolean" },
+        "published": { "type": "boolean" },
+        "imageUrls": { "type": "array" },
+        "variations": { "type": "array" },
+        "specifications": { "type": "array" },
+        "searchKeywords": { "type": "array" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": [
+        "id",
+        "name",
+        "slug",
+        "description",
+        "categoryId",
+        "categoryName",
+        "priceKsh",
+        "stockQty",
+        "availabilityStatus",
+        "featured",
+        "published",
+        "imageUrls",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "Service": {
+      "title": "Service",
+      "description": "Installation, decoration, or technical service offered in Kenya.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "title": { "type": "string", "minLength": 2, "maxLength": 140 },
+        "slug": { "type": "string", "minLength": 2, "maxLength": 140, "pattern": "^[a-z0-9\\-]+$" },
+        "description": { "type": "string", "minLength": 5, "maxLength": 3000 },
+        "category": { "type": "string", "minLength": 2, "maxLength": 80 },
+        "benefits": { "type": "array" },
+        "estimatedPriceKsh": { "type": "number" },
+        "priceUnit": { "type": "string", "maxLength": 60 },
+        "available": { "type": "boolean" },
+        "published": { "type": "boolean" },
+        "bookingInstructions": { "type": "string", "maxLength": 1000 },
+        "imageUrls": { "type": "array" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "title", "slug", "description", "category", "benefits", "available", "published", "imageUrls", "createdAt", "updatedAt"]
+    },
+    "CartItem": {
+      "title": "CartItem",
+      "description": "Persistent shopping cart item stored per authenticated customer.",
+      "type": "object",
+      "properties": {
+        "productId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "productName": { "type": "string", "maxLength": 140 },
+        "variant": { "type": "string", "maxLength": 80 },
+        "quantity": { "type": "number" },
+        "unitPriceKsh": { "type": "number" },
+        "imageUrl": { "type": "string", "maxLength": 500 },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["productId", "productName", "quantity", "unitPriceKsh", "updatedAt"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Customer purchase order with Kenyan delivery and M-Pesa payment state.",
+      "type": "object",
+      "properties": {
+        "orderRef": { "type": "string", "minLength": 4, "maxLength": 40 },
+        "customerId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "customerName": { "type": "string", "minLength": 2, "maxLength": 120 },
+        "customerPhone": { "type": "string", "maxLength": 20, "pattern": "^(\\+254|0)[17]\\d{8}$" },
+        "customerEmail": { "type": "string", "maxLength": 160 },
+        "deliveryTown": { "type": "string", "minLength": 2, "maxLength": 100 },
+        "deliveryAddress": { "type": "string", "minLength": 3, "maxLength": 300 },
+        "itemsSummary": { "type": "string", "maxLength": 200 },
+        "itemCount": { "type": "number" },
+        "subtotalKsh": { "type": "number" },
+        "deliveryFeeKsh": { "type": "number" },
+        "discountKsh": { "type": "number" },
+        "totalKsh": { "type": "number" },
+        "paymentMethod": { "type": "string", "enum": ["mpesa_stk", "pay_on_delivery"] },
+        "paymentStatus": { "type": "string", "enum": ["unpaid", "pending", "paid", "failed"] },
+        "orderStatus": {
+          "type": "string",
+          "enum": ["pending", "awaiting_payment", "confirmed", "processing", "ready_for_dispatch", "dispatched", "delivered", "cancelled"]
+        },
+        "mpesaCheckoutRequestId": { "type": "string", "maxLength": 120 },
+        "mpesaReceiptNumber": { "type": "string", "maxLength": 60 },
+        "notes": { "type": "string", "maxLength": 500 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": [
+        "orderRef",
+        "customerId",
+        "customerName",
+        "customerPhone",
+        "customerEmail",
+        "deliveryTown",
+        "deliveryAddress",
+        "itemsSummary",
+        "itemCount",
+        "subtotalKsh",
+        "deliveryFeeKsh",
+        "discountKsh",
+        "totalKsh",
+        "paymentMethod",
+        "paymentStatus",
+        "orderStatus",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "OrderItem": {
+      "title": "OrderItem",
+      "description": "Normalized order line item subcollection document.",
+      "type": "object",
+      "properties": {
+        "orderId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "customerId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "productId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "productName": { "type": "string", "minLength": 1, "maxLength": 140 },
+        "variant": { "type": "string", "maxLength": 80 },
+        "quantity": { "type": "number" },
+        "unitPriceKsh": { "type": "number" },
+        "lineTotalKsh": { "type": "number" }
+      },
+      "required": ["orderId", "customerId", "productId", "productName", "quantity", "unitPriceKsh", "lineTotalKsh"]
+    },
+    "PaymentTransaction": {
+      "title": "PaymentTransaction",
+      "description": "Idempotent M-Pesa Daraja payment transaction ledger entry.",
+      "type": "object",
+      "properties": {
+        "orderId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "customerId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "amountKsh": { "type": "number" },
+        "phoneNumber": { "type": "string", "maxLength": 20, "pattern": "^(\\+254|0)[17]\\d{8}$" },
+        "provider": { "type": "string", "enum": ["mpesa_daraja"] },
+        "checkoutRequestId": { "type": "string", "maxLength": 120 },
+        "merchantRequestId": { "type": "string", "maxLength": 120 },
+        "mpesaReceiptNumber": { "type": "string", "maxLength": 60 },
+        "status": { "type": "string", "enum": ["initiated", "completed", "failed", "cancelled"] },
+        "resultDesc": { "type": "string", "maxLength": 300 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["orderId", "customerId", "amountKsh", "phoneNumber", "provider", "status", "createdAt", "updatedAt"]
+    },
+    "Booking": {
+      "title": "Booking",
+      "description": "Service consultation and quotation request submitted by a customer.",
+      "type": "object",
+      "properties": {
+        "bookingRef": { "type": "string", "minLength": 4, "maxLength": 40 },
+        "customerId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "customerName": { "type": "string", "minLength": 2, "maxLength": 120 },
+        "phoneNumber": { "type": "string", "maxLength": 20, "pattern": "^(\\+254|0)[17]\\d{8}$" },
+        "email": { "type": "string", "maxLength": 160 },
+        "locationTown": { "type": "string", "minLength": 2, "maxLength": 120 },
+        "serviceId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "serviceTitle": { "type": "string", "minLength": 2, "maxLength": 140 },
+        "projectDescription": { "type": "string", "minLength": 10, "maxLength": 2000 },
+        "preferredDate": { "type": "string", "minLength": 8, "maxLength": 30 },
+        "attachmentUrls": { "type": "array" },
+        "status": { "type": "string", "enum": ["pending", "reviewing", "quoted", "scheduled", "completed", "cancelled"] },
+        "quotedAmountKsh": { "type": "number" },
+        "quotationNotes": { "type": "string", "maxLength": 2000 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": [
+        "bookingRef",
+        "customerId",
+        "customerName",
+        "phoneNumber",
+        "email",
+        "locationTown",
+        "serviceId",
+        "serviceTitle",
+        "projectDescription",
+        "preferredDate",
+        "status",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "Quotation": {
+      "title": "Quotation",
+      "description": "Formal quotation issued by administrators in response to a booking.",
+      "type": "object",
+      "properties": {
+        "quotationRef": { "type": "string", "minLength": 4, "maxLength": 40 },
+        "bookingId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "customerId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "serviceTitle": { "type": "string", "maxLength": 140 },
+        "lineItemsSummary": { "type": "string", "maxLength": 1500 },
+        "estimatedTotalKsh": { "type": "number" },
+        "validUntil": { "type": "string", "maxLength": 40 },
+        "status": { "type": "string", "enum": ["draft", "sent", "accepted", "declined"] },
+        "adminNotes": { "type": "string", "maxLength": 1500 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["quotationRef", "bookingId", "customerId", "serviceTitle", "lineItemsSummary", "estimatedTotalKsh", "status", "createdAt", "updatedAt"]
+    },
+    "PortfolioProject": {
+      "title": "PortfolioProject",
+      "description": "Completed or clearly labeled demonstration portfolio project.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "title": { "type": "string", "minLength": 2, "maxLength": 140 },
+        "slug": { "type": "string", "minLength": 2, "maxLength": 140, "pattern": "^[a-z0-9\\-]+$" },
+        "category": { "type": "string", "minLength": 2, "maxLength": 80 },
+        "location": { "type": "string", "maxLength": 120 },
+        "description": { "type": "string", "minLength": 5, "maxLength": 2500 },
+        "imageUrls": { "type": "array" },
+        "completionDate": { "type": "string", "maxLength": 40 },
+        "featured": { "type": "boolean" },
+        "published": { "type": "boolean" },
+        "isDemo": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "title", "slug", "category", "description", "imageUrls", "featured", "published", "isDemo", "createdAt", "updatedAt"]
+    },
+    "NotificationItem": {
+      "title": "NotificationItem",
+      "description": "In-app notification synchronized with FCM updates.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "title": { "type": "string", "maxLength": 120 },
+        "message": { "type": "string", "maxLength": 500 },
+        "type": { "type": "string", "enum": ["order", "payment", "booking", "quotation", "announcement"] },
+        "read": { "type": "boolean" },
+        "linkPath": { "type": "string", "maxLength": 200 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "title", "message", "type", "read", "createdAt"]
+    },
+    "ProductReview": {
+      "title": "ProductReview",
+      "description": "Verified customer review for a product.",
+      "type": "object",
+      "properties": {
+        "productId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "userId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "authorName": { "type": "string", "maxLength": 100 },
+        "rating": { "type": "number" },
+        "comment": { "type": "string", "maxLength": 1000 },
+        "published": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["productId", "userId", "authorName", "rating", "comment", "published", "createdAt"]
+    },
+    "FavouriteItem": {
+      "title": "FavouriteItem",
+      "description": "Saved favourite product reference under a user.",
+      "type": "object",
+      "properties": {
+        "productId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["productId", "createdAt"]
+    },
+    "Promotion": {
+      "title": "Promotion",
+      "description": "Promotional discount campaign managed by admins.",
+      "type": "object",
+      "properties": {
+        "code": { "type": "string", "maxLength": 40 },
+        "title": { "type": "string", "maxLength": 120 },
+        "discountPercent": { "type": "number" },
+        "published": { "type": "boolean" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["code", "title", "discountPercent", "published", "updatedAt"]
+    },
+    "PublicSettings": {
+      "title": "PublicSettings",
+      "description": "Configurable business branding, hero campaign, announcement bar, WhatsApp, and delivery settings.",
+      "type": "object",
+      "properties": {
+        "businessName": { "type": "string", "maxLength": 120 },
+        "tagline": { "type": "string", "maxLength": 160 },
+        "logoUrl": { "type": "string", "maxLength": 500 },
+        "announcementText": { "type": "string", "maxLength": 200 },
+        "announcementActive": { "type": "boolean" },
+        "heroKicker": { "type": "string", "maxLength": 100 },
+        "heroHeadline": { "type": "string", "maxLength": 160 },
+        "heroSubtitle": { "type": "string", "maxLength": 400 },
+        "heroImageUrl": { "type": "string", "maxLength": 500 },
+        "heroPrimaryCta": { "type": "string", "maxLength": 60 },
+        "heroSecondaryCta": { "type": "string", "maxLength": 60 },
+        "whatsappNumber": { "type": "string", "maxLength": 20 },
+        "supportEmail": { "type": "string", "maxLength": 160 },
+        "showroomLocation": { "type": "string", "maxLength": 200 },
+        "facebookUrl": { "type": "string", "maxLength": 500 },
+        "instagramUrl": { "type": "string", "maxLength": 500 },
+        "tiktokUrl": { "type": "string", "maxLength": 500 },
+        "standardDeliveryFeeKsh": { "type": "number" },
+        "freeDeliveryThresholdKsh": { "type": "number" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["businessName", "standardDeliveryFeeKsh", "freeDeliveryThresholdKsh", "updatedAt"]
+    },
+    "AuditLog": {
+      "title": "AuditLog",
+      "description": "Immutable administrative audit trail entry.",
+      "type": "object",
+      "properties": {
+        "actorId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "actorEmail": { "type": "string", "maxLength": 160 },
+        "action": { "type": "string", "maxLength": 80 },
+        "targetCollection": { "type": "string", "maxLength": 80 },
+        "targetId": { "type": "string", "maxLength": 128 },
+        "summary": { "type": "string", "maxLength": 400 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["actorId", "actorEmail", "action", "targetCollection", "targetId", "summary", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserAccount" },
+      "description": "User account role and non-PII display record."
+    },
+    "/users/{userId}/private/info": {
+      "schema": { "$ref": "#/entities/UserPrivateInfo" },
+      "description": "Owner/admin isolated PII including email, Kenyan phone, delivery address, and FCM token."
+    },
+    "/users/{userId}/cart/{cartItemId}": {
+      "schema": { "$ref": "#/entities/CartItem" },
+      "description": "Persistent shopping cart line items per user."
+    },
+    "/users/{userId}/favourites/{productId}": {
+      "schema": { "$ref": "#/entities/FavouriteItem" },
+      "description": "User saved favourite products."
+    },
+    "/categories/{categoryId}": {
+      "schema": { "$ref": "#/entities/Category" },
+      "description": "Published product and service categories."
+    },
+    "/products/{productId}": {
+      "schema": { "$ref": "#/entities/Product" },
+      "description": "E-commerce product catalog."
+    },
+    "/services/{serviceId}": {
+      "schema": { "$ref": "#/entities/Service" },
+      "description": "Bookable installation and design services."
+    },
+    "/orders/{orderId}": {
+      "schema": { "$ref": "#/entities/Order" },
+      "description": "Customer orders."
+    },
+    "/orders/{orderId}/items/{itemId}": {
+      "schema": { "$ref": "#/entities/OrderItem" },
+      "description": "Order line items normalized subcollection."
+    },
+    "/paymentTransactions/{txId}": {
+      "schema": { "$ref": "#/entities/PaymentTransaction" },
+      "description": "M-Pesa Daraja transaction records."
+    },
+    "/bookings/{bookingId}": {
+      "schema": { "$ref": "#/entities/Booking" },
+      "description": "Service consultation and quotation requests."
+    },
+    "/quotations/{quotationId}": {
+      "schema": { "$ref": "#/entities/Quotation" },
+      "description": "Admin quotations issued for customer bookings."
+    },
+    "/projects/{projectId}": {
+      "schema": { "$ref": "#/entities/PortfolioProject" },
+      "description": "Company portfolio projects."
+    },
+    "/notifications/{notificationId}": {
+      "schema": { "$ref": "#/entities/NotificationItem" },
+      "description": "User-scoped notifications."
+    },
+    "/reviews/{reviewId}": {
+      "schema": { "$ref": "#/entities/ProductReview" },
+      "description": "Verified customer product reviews."
+    },
+    "/promotions/{promoId}": {
+      "schema": { "$ref": "#/entities/Promotion" },
+      "description": "Promotional offers."
+    },
+    "/settings/{settingId}": {
+      "schema": { "$ref": "#/entities/PublicSettings" },
+      "description": "Public storefront and contact configuration."
+    },
+    "/auditLogs/{logId}": {
+      "schema": { "$ref": "#/entities/AuditLog" },
+      "description": "Immutable admin audit log."
+    }
+  }
+}

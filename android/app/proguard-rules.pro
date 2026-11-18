@@ -1,0 +1,1 @@
+-keepclassmembers class com.stylah.platform.data.** { *; }

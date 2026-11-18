@@ -1,0 +1,176 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Outfit", system-ui, -apple-system, sans-serif;
+  --font-sans: "DM Sans", system-ui, -apple-system, sans-serif;
+  --color-crimson: #a81825;
+  --color-crimson-deep: #820014;
+  --color-charcoal: #202020;
+  --color-surface-base: #ffffff;
+  --color-surface-warm: #fcf9f8;
+  --color-surface-alt: #f8f9fa;
+  --color-surface-raised: #f5f5f5;
+  --color-border-hairline: #e5e7eb;
+  --color-mpesa: #00a859;
+  --color-whatsapp: #25d366;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-sans);
+    color: #202020;
+    background-color: #fcf9f8;
+    scroll-behavior: smooth;
+    color-scheme: light;
+  }
+
+  html.dark {
+    color: #f5f1f0;
+    background-color: #121010;
+    color-scheme: dark;
+  }
+
+  h1, h2, h3, h4, .font-display {
+    font-family: var(--font-display);
+  }
+}
+
+/* Atelier Crimson Dark Theme Overrides */
+html.dark body {
+  background-color: #121010;
+  color: #f5f1f0;
+}
+
+html.dark .bg-\[\#fcf9f8\],
+html.dark .bg-\[\#fcf9f8\]\/95 {
+  background-color: #121010;
+}
+
+html.dark .bg-white,
+html.dark .bg-white\/95 {
+  background-color: #1c1919;
+}
+
+html.dark .bg-\[\#f8f9fa\],
+html.dark .bg-\[\#f5f5f5\] {
+  background-color: #252121;
+}
+
+html.dark .hover\:bg-\[\#f8f9fa\]:hover,
+html.dark .hover\:bg-\[\#f5f5f5\]:hover {
+  background-color: #2e2828;
+}
+
+html.dark .bg-\[\#202020\] {
+  background-color: #2c2626;
+}
+
+html.dark .hover\:bg-\[\#333333\]:hover {
+  background-color: #3a3232;
+}
+
+html.dark .text-\[\#202020\] {
+  color: #f5f1f0;
+}
+
+html.dark .hover\:text-\[\#202020\]:hover {
+  color: #ffffff;
+}
+
+html.dark .text-\[\#5a403f\] {
+  color: #cbbdba;
+}
+
+html.dark .text-\[\#6b7280\] {
+  color: #a69b99;
+}
+
+html.dark .border-\[\#e5e7eb\],
+html.dark .border-\[\#f0eded\],
+html.dark .divide-\[\#f0eded\] > :not(:last-child) {
+  border-color: #332c2c;
+}
+
+html.dark .text-\[\#a81825\] {
+  color: #f26c76;
+}
+
+html.dark .border-\[\#a81825\] {
+  border-color: #d94a56;
+}
+
+html.dark input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+html.dark select,
+html.dark textarea {
+  background-color: #242020;
+  color: #f5f1f0;
+  border-color: #3a3232;
+}
+
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: #8f8482;
+}
+
+html.dark .bg-\[\#e8fbf0\] {
+  background-color: #123322;
+}
+
+html.dark .text-\[\#005228\],
+html.dark .text-\[\#178a43\] {
+  color: #5ee69c;
+}
+
+html.dark .bg-\[\#ffdad6\],
+html.dark .bg-\[\#ffdad6\]\/60 {
+  background-color: #3c181a;
+}
+
+html.dark .text-\[\#93000a\] {
+  color: #ffb4ab;
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+.shadow-level-1 {
+  box-shadow: 0px 2px 6px rgba(32, 32, 32, 0.04);
+}
+
+.shadow-level-2 {
+  box-shadow: 0px 4px 16px rgba(32, 32, 32, 0.08);
+}
+
+.shadow-level-3 {
+  box-shadow: 0px -2px 12px rgba(32, 32, 32, 0.06);
+}
+
+html.dark .shadow-level-1 {
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.35);
+}
+
+html.dark .shadow-level-2 {
+  box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.45);
+}
+
+html.dark .shadow-level-3 {
+  box-shadow: 0px -2px 14px rgba(0, 0, 0, 0.45);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
