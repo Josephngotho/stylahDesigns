@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
 import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
@@ -29,6 +29,8 @@ interface AuthContextValue {
   isStaff: boolean;
   loading: boolean;
   firestoreOffline: boolean;
+  recheckConnection: () => Promise<boolean>;
+  markFirestoreOnline: () => void;
   signInWithGoogle: () => Promise<void>;
   registerWithEmail: (fullName: string, email: string, password: string) => Promise<void>;
   loginWithEmail: (email: string, password: string) => Promise<void>;
@@ -48,56 +50,89 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [role, setRole] = useState<UserRole>('customer');
   const [loading, setLoading] = useState(true);
   const [firestoreOffline, setFirestoreOffline] = useState(false);
+  const syncInFlightRef = useRef<Map<string, Promise<void>>>(new Map());
 
-  const syncUserDocuments = async (firebaseUser: User) => {
-    try {
-      const userRef = doc(db, 'users', firebaseUser.uid);
-      const userSnap = await getDoc(userRef);
+  const recheckConnection = async (): Promise<boolean> => {
+    const res = await testFirestoreConnection();
+    const isOffline = Boolean(res.offline);
+    setFirestoreOffline(isOffline);
+    if (!isOffline && auth.currentUser) {
+      await syncUserDocuments(auth.currentUser);
+    }
+    return !isOffline;
+  };
 
-      if (!userSnap.exists()) {
-        const newAccount: UserAccount = {
-          uid: firebaseUser.uid,
-          fullName: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'Stylah Customer',
-          profileImage: firebaseUser.photoURL || '',
-          role: 'customer',
-          accountStatus: 'active',
-        };
-        await setDoc(userRef, {
-          ...newAccount,
-          createdAt: serverTimestamp(),
-          updatedAt: serverTimestamp(),
-        });
-        setProfile(newAccount);
-      } else {
-        setProfile(userSnap.data() as UserAccount);
-      }
+  const markFirestoreOnline = () => {
+    setFirestoreOffline((prev) => (prev ? false : prev));
+  };
 
-      const privRef = doc(db, 'users', firebaseUser.uid, 'private', 'info');
-      const privSnap = await getDoc(privRef);
-      if (!privSnap.exists()) {
-        const initPrivate: UserPrivateInfo = {
-          uid: firebaseUser.uid,
-          email: firebaseUser.email || '',
-          phoneNumber: '',
-          deliveryTown: 'Nairobi',
-          deliveryAddress: '',
-        };
-        await setDoc(privRef, {
-          ...initPrivate,
-          updatedAt: serverTimestamp(),
-        });
-        setPrivateInfo(initPrivate);
-      } else {
-        setPrivateInfo(privSnap.data() as UserPrivateInfo);
-      }
+  const syncUserDocuments = (firebaseUser: User, preferredName?: string): Promise<void> => {
+    const existingPromise = syncInFlightRef.current.get(firebaseUser.uid);
+    if (existingPromise) {
+      return existingPromise;
+    }
 
-      // Resolve trusted role from verified bootstrap emails or admins/staff docs
-      let resolvedRole: UserRole = 'customer';
+    const run = (async () => {
+      // Resolve bootstrap admin role immediately so verified admins are never locked out by transient sync delays
       const normalizedEmail = (firebaseUser.email || '').trim().toLowerCase();
-      if (firebaseUser.emailVerified) {
-        if (BOOTSTRAP_ADMIN_EMAILS.includes(normalizedEmail)) {
-          resolvedRole = 'admin';
+      const isBootstrapAdmin =
+        Boolean(firebaseUser.emailVerified) && BOOTSTRAP_ADMIN_EMAILS.includes(normalizedEmail);
+      if (isBootstrapAdmin) {
+        setRole('admin');
+      }
+
+      try {
+        const userRef = doc(db, 'users', firebaseUser.uid);
+        const userSnap = await getDoc(userRef);
+
+        if (!userSnap.exists()) {
+          const rawName =
+            preferredName?.trim() ||
+            firebaseUser.displayName?.trim() ||
+            firebaseUser.email?.split('@')[0]?.trim() ||
+            'Stylah Customer';
+          const newAccount: UserAccount = {
+            uid: firebaseUser.uid,
+            fullName: rawName.slice(0, 120),
+            profileImage: (firebaseUser.photoURL || '').slice(0, 500),
+            role: 'customer',
+            accountStatus: 'active',
+          };
+          await setDoc(userRef, {
+            ...newAccount,
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp(),
+          });
+          setProfile(newAccount);
         } else {
+          setProfile(userSnap.data() as UserAccount);
+        }
+
+        const privRef = doc(db, 'users', firebaseUser.uid, 'private', 'info');
+        const privSnap = await getDoc(privRef);
+        if (!privSnap.exists()) {
+          const safeEmail = (firebaseUser.email || `${firebaseUser.uid}@stylah.local`).trim().slice(0, 160);
+          const initPrivate: UserPrivateInfo = {
+            uid: firebaseUser.uid,
+            email: safeEmail.length >= 3 ? safeEmail : `${firebaseUser.uid}@stylah.local`,
+            phoneNumber: '',
+            deliveryTown: 'Nairobi',
+            deliveryAddress: '',
+          };
+          await setDoc(privRef, {
+            ...initPrivate,
+            updatedAt: serverTimestamp(),
+          });
+          setPrivateInfo(initPrivate);
+        } else {
+          setPrivateInfo(privSnap.data() as UserPrivateInfo);
+        }
+
+        setFirestoreOffline(false);
+
+        // Resolve trusted role from verified bootstrap emails or admins/staff docs
+        let resolvedRole: UserRole = isBootstrapAdmin ? 'admin' : 'customer';
+        if (firebaseUser.emailVerified && !isBootstrapAdmin) {
           const [adminSnap, staffSnap] = await Promise.all([
             getDoc(doc(db, 'admins', firebaseUser.uid)).catch(() => null),
             getDoc(doc(db, 'staff', firebaseUser.uid)).catch(() => null),
@@ -108,17 +143,30 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             resolvedRole = 'staff';
           }
         }
+        setRole(resolvedRole);
+      } catch (err) {
+        console.warn('User profile sync warning:', err);
       }
-      setRole(resolvedRole);
-    } catch (err) {
-      console.warn('User profile sync warning:', err);
-    }
+    })().finally(() => {
+      syncInFlightRef.current.delete(firebaseUser.uid);
+    });
+
+    syncInFlightRef.current.set(firebaseUser.uid, run);
+    return run;
   };
 
   useEffect(() => {
+    let active = true;
     testFirestoreConnection().then((res) => {
-      if (res.offline) setFirestoreOffline(true);
+      if (active) setFirestoreOffline(Boolean(res.offline));
     });
+
+    const handleOnline = () => {
+      testFirestoreConnection().then((res) => {
+        if (active) setFirestoreOffline(Boolean(res.offline));
+      });
+    };
+    window.addEventListener('online', handleOnline);
 
     const unsub = onAuthStateChanged(auth, async (firebaseUser) => {
       setUser(firebaseUser);
@@ -132,7 +180,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setLoading(false);
     });
 
-    return () => unsub();
+    return () => {
+      active = false;
+      window.removeEventListener('online', handleOnline);
+      unsub();
+    };
   }, []);
 
   const signInWithGoogle = async () => {
@@ -142,12 +194,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const registerWithEmail = async (fullName: string, email: string, password: string) => {
+    const cleanName = fullName.trim().slice(0, 120);
     const cred = await createUserWithEmailAndPassword(auth, email.trim(), password);
-    if (fullName.trim()) {
-      await updateProfile(cred.user, { displayName: fullName.trim() });
+    if (cleanName) {
+      await updateProfile(cred.user, { displayName: cleanName }).catch(() => undefined);
     }
-    await sendEmailVerification(cred.user);
-    await syncUserDocuments(cred.user);
+    await syncUserDocuments(cred.user, cleanName);
+    try {
+      await sendEmailVerification(cred.user);
+    } catch (verifyErr) {
+      console.warn('Verification email send warning:', verifyErr);
+    }
   };
 
   const loginWithEmail = async (email: string, password: string) => {
@@ -229,6 +286,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         isStaff,
         loading,
         firestoreOffline,
+        recheckConnection,
+        markFirestoreOnline,
         signInWithGoogle,
         registerWithEmail,
         loginWithEmail,

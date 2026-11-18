@@ -98,6 +98,28 @@ function escapeXml(str: string): string {
     .replace(/'/g, '&apos;');
 }
 
+const PRIMARY_CUSTOM_DOMAIN = 'https://sylahdesigns.ai.studio';
+
+function getConfiguredCustomDomains(): string[] {
+  const extra = (process.env.CUSTOM_DOMAINS || '')
+    .split(',')
+    .map((d) => d.trim().replace(/\/$/, ''))
+    .filter(Boolean);
+  return Array.from(new Set([PRIMARY_CUSTOM_DOMAIN, ...extra]));
+}
+
+function resolveRequestBaseUrl(req: Request): string {
+  const rawHost = String(req.get('x-forwarded-host') || req.get('host') || '').split(',')[0].trim();
+  const proto = String(req.get('x-forwarded-proto') || req.protocol || 'https').split(',')[0].trim();
+  if (rawHost) {
+    const candidate = `${proto}://${rawHost}`.replace(/\/$/, '');
+    if (getConfiguredCustomDomains().includes(candidate)) {
+      return candidate;
+    }
+  }
+  return (process.env.APP_URL || (rawHost ? `${proto}://${rawHost}` : PRIMARY_CUSTOM_DOMAIN)).replace(/\/$/, '');
+}
+
 // -----------------------------------------------------------------------------
 // Firestore Public REST Reader (No IAM needed for published public docs)
 // -----------------------------------------------------------------------------
@@ -260,7 +282,8 @@ async function startServer() {
       emailConfigured: Boolean(process.env.RESEND_API_KEY),
       whatsappNumber: process.env.WHATSAPP_BUSINESS_NUMBER || '254745280011',
       supportEmail: process.env.SUPPORT_EMAIL || 'stylahindustries297@gmail.com',
-      appUrl: process.env.APP_URL || '',
+      appUrl: process.env.APP_URL || PRIMARY_CUSTOM_DOMAIN,
+      customDomains: getConfiguredCustomDomains(),
     });
   });
 
@@ -551,7 +574,7 @@ async function startServer() {
 
   // Dynamic robots.txt
   app.get('/robots.txt', (req, res) => {
-    const hostUrl = (process.env.APP_URL || `${req.protocol}://${req.get('host')}`).replace(/\/$/, '');
+    const hostUrl = resolveRequestBaseUrl(req);
     res.type('text/plain').send(
       [
         'User-agent: *',
@@ -567,7 +590,7 @@ async function startServer() {
 
   // Dynamic sitemap.xml from published Firestore public items
   app.get('/sitemap.xml', async (req, res) => {
-    const hostUrl = (process.env.APP_URL || `${req.protocol}://${req.get('host')}`).replace(/\/$/, '');
+    const hostUrl = resolveRequestBaseUrl(req);
     const [productSlugs, serviceSlugs, projectSlugs] = await Promise.all([
       fetchPublicCollectionSlugs('products'),
       fetchPublicCollectionSlugs('services'),

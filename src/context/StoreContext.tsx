@@ -102,7 +102,7 @@ function cartDocId(productId: string, variant?: string): string {
 }
 
 export function StoreProvider({ children }: { children: React.ReactNode }) {
-  const { user, isStaff } = useAuth();
+  const { user, isStaff, markFirestoreOnline } = useAuth();
 
   const [categories, setCategories] = useState<Category[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
@@ -174,45 +174,62 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     const unsubCats = onSnapshot(
       catQuery,
       (snap) => {
+        if (!snap.metadata.fromCache) markFirestoreOnline();
         const list = snap.docs
           .map((d) => ({ ...(d.data() as Category), id: d.id }))
           .sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0));
         setCategories(list);
         markDone();
       },
-      (err) => handleFirestoreError(err, OperationType.LIST, 'categories')
+      (err) => {
+        markDone();
+        handleFirestoreError(err, OperationType.LIST, 'categories');
+      }
     );
 
     const unsubProds = onSnapshot(
       prodQuery,
       (snap) => {
+        if (!snap.metadata.fromCache) markFirestoreOnline();
         setProducts(snap.docs.map((d) => ({ ...(d.data() as Product), id: d.id })));
         markDone();
       },
-      (err) => handleFirestoreError(err, OperationType.LIST, 'products')
+      (err) => {
+        markDone();
+        handleFirestoreError(err, OperationType.LIST, 'products');
+      }
     );
 
     const unsubSvcs = onSnapshot(
       svcQuery,
       (snap) => {
+        if (!snap.metadata.fromCache) markFirestoreOnline();
         setServices(snap.docs.map((d) => ({ ...(d.data() as ServiceItem), id: d.id })));
         markDone();
       },
-      (err) => handleFirestoreError(err, OperationType.LIST, 'services')
+      (err) => {
+        markDone();
+        handleFirestoreError(err, OperationType.LIST, 'services');
+      }
     );
 
     const unsubProjs = onSnapshot(
       projQuery,
       (snap) => {
+        if (!snap.metadata.fromCache) markFirestoreOnline();
         setProjects(snap.docs.map((d) => ({ ...(d.data() as PortfolioProject), id: d.id })));
         markDone();
       },
-      (err) => handleFirestoreError(err, OperationType.LIST, 'projects')
+      (err) => {
+        markDone();
+        handleFirestoreError(err, OperationType.LIST, 'projects');
+      }
     );
 
     const unsubPromos = onSnapshot(
       promoQuery,
       (snap) => {
+        if (!snap.metadata.fromCache) markFirestoreOnline();
         setPromotions(snap.docs.map((d) => ({ ...(d.data() as Promotion), id: d.id })));
       },
       () => undefined
@@ -221,6 +238,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     const unsubSettings = onSnapshot(
       doc(db, 'settings', 'public'),
       (snap) => {
+        if (!snap.metadata.fromCache) markFirestoreOnline();
         if (snap.exists()) {
           const data = snap.data() as Partial<PublicSettings>;
           setSettings({

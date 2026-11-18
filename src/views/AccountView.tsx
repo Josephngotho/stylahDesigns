@@ -83,6 +83,57 @@ export function AccountView({ onNavigate }: AccountViewProps) {
     if (privateInfo?.deliveryAddress) setEditAddress(privateInfo.deliveryAddress);
   }, [profile, privateInfo]);
 
+  const formatAuthError = (err: unknown, fallback: string): string => {
+    const raw = err instanceof Error ? err.message : String(err || '');
+    const codeMatch = raw.match(/\(?(auth\/[a-z0-9-]+)\)?/i);
+    const codeTag = codeMatch ? ` (${codeMatch[1]})` : '';
+
+    if (raw.includes('auth/operation-not-allowed')) {
+      return `Email/Password sign-in is not enabled in Firebase Console yet. Click "Continue with Google" above, or enable Email/Password under Authentication → Sign-in method.${codeTag}`;
+    }
+    if (raw.includes('auth/admin-restricted-operation')) {
+      return `New account sign-ups are currently restricted in Firebase Console. Enable "Create (sign-up)" under Authentication → Settings → User actions.${codeTag}`;
+    }
+    if (raw.includes('auth/email-already-in-use')) {
+      return `An account with this email already exists. Switch to "Sign In" or click "Continue with Google" above.${codeTag}`;
+    }
+    if (raw.includes('auth/weak-password') || raw.includes('auth/password-does-not-meet-requirements')) {
+      return `Password does not meet security requirements. Use at least 6–8 characters including uppercase, lowercase, and a number.${codeTag}`;
+    }
+    if (raw.includes('auth/invalid-email')) {
+      return `Please enter a valid email address.${codeTag}`;
+    }
+    if (raw.includes('auth/account-exists-with-different-credential')) {
+      return `This email is already registered with a different sign-in method. Try Email & Password sign-in or Google.${codeTag}`;
+    }
+    if (raw.includes('auth/popup-blocked')) {
+      return `Sign-in popup was blocked by your browser. Allow popups for this site and click "Continue with Google" again.${codeTag}`;
+    }
+    if (raw.includes('auth/popup-closed-by-user')) {
+      return `Google sign-in window was closed before completing login.${codeTag}`;
+    }
+    if (raw.includes('auth/cancelled-popup-request')) {
+      return `Another sign-in window is already open. Please finish or close it and try again.${codeTag}`;
+    }
+    if (raw.includes('auth/unauthorized-domain')) {
+      return `This domain (${window.location.hostname}) is not authorized in Firebase Console → Authentication → Settings → Authorized domains.${codeTag}`;
+    }
+    if (raw.includes('auth/network-request-failed')) {
+      return `Network request to Firebase Authentication failed. Check your connection or disable any script blocker and retry.${codeTag}`;
+    }
+    if (
+      raw.includes('auth/invalid-credential') ||
+      raw.includes('auth/wrong-password') ||
+      raw.includes('auth/user-not-found')
+    ) {
+      return `Invalid email or password. If your account uses Google, click "Continue with Google" above.${codeTag}`;
+    }
+    if (raw.includes('auth/too-many-requests')) {
+      return `Too many attempts. Please wait a minute and try again.${codeTag}`;
+    }
+    return raw || fallback;
+  };
+
   const handleAuthSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setAuthError('');
@@ -99,7 +150,7 @@ export function AccountView({ onNavigate }: AccountViewProps) {
         setAuthFeedback('Account created! Check your inbox for the verification email.');
       }
     } catch (err) {
-      setAuthError(err instanceof Error ? err.message : 'Authentication failed.');
+      setAuthError(formatAuthError(err, 'Authentication failed.'));
     } finally {
       setAuthBusy(false);
     }
@@ -112,7 +163,7 @@ export function AccountView({ onNavigate }: AccountViewProps) {
     try {
       await signInWithGoogle();
     } catch (err) {
-      setAuthError(err instanceof Error ? err.message : 'Google Sign-In failed.');
+      setAuthError(formatAuthError(err, 'Google Sign-In failed.'));
     } finally {
       setAuthBusy(false);
     }

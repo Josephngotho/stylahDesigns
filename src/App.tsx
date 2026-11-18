@@ -70,8 +70,9 @@ function DevPreviewLauncher() {
 }
 
 function AppShell() {
-  const { firestoreOffline } = useAuth();
+  const { firestoreOffline, recheckConnection } = useAuth();
   const { settings } = useStore();
+  const [retryingConn, setRetryingConn] = useState(false);
   const [activeTab, setActiveTab] = useState<AppTab>('home');
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [bannerDismissed, setBannerDismissed] = useState(false);
@@ -110,8 +111,20 @@ function AppShell() {
       )}
 
       {firestoreOffline && (
-        <div className="bg-[#ffdad6] text-[#93000a] text-xs px-4 py-2 text-center font-medium">
-          Firestore appears offline. Verify your network connection or Firebase configuration.
+        <div className="bg-[#ffdad6] text-[#93000a] text-xs px-4 py-2 text-center font-medium flex flex-wrap items-center justify-center gap-3">
+          <span>Firestore appears offline. Verify your network connection or Firebase configuration.</span>
+          <button
+            type="button"
+            disabled={retryingConn}
+            onClick={async () => {
+              setRetryingConn(true);
+              await recheckConnection();
+              setRetryingConn(false);
+            }}
+            className="px-2.5 py-1 rounded bg-[#93000a] text-white text-[11px] font-semibold hover:bg-[#a81825] disabled:opacity-60"
+          >
+            {retryingConn ? 'Checking...' : 'Retry Connection'}
+          </button>
         </div>
       )}
 
