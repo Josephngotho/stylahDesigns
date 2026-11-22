@@ -674,7 +674,8 @@ export function CartCheckoutView({ onNavigate }: CartCheckoutViewProps) {
             )}
 
             <button
-              type="submit"
+              type={user ? "submit" : "button"}
+              onClick={() => { if (!user) onNavigate('account'); }}
               disabled={submitting}
               className={`w-full min-h-[48px] rounded text-white text-sm font-semibold transition-colors disabled:opacity-50 ${
                 paymentMethod === 'mpesa_stk'
