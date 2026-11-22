@@ -112,36 +112,36 @@ export function ServicesView({ onNavigate }: ServicesViewProps) {
         attachmentUrls.push(url);
       }
 
-      try {
-        await setDoc(doc(db, 'bookings', bookingId), {
-          bookingRef,
-          customerId: user.uid,
-          customerName: customerName.trim().slice(0, 120),
-          phoneNumber: normalized,
-          email: email.trim().slice(0, 160),
-          locationTown: locationTown.trim().slice(0, 120),
-          serviceId: selectedService.id,
-          serviceTitle: selectedService.title.slice(0, 140),
-          projectDescription: projectDescription.trim().slice(0, 2000),
-          preferredDate,
-          attachmentUrls,
-          status: 'pending',
-          createdAt: serverTimestamp(),
-          updatedAt: serverTimestamp(),
-        });
+      await setDoc(doc(db, 'bookings', bookingId), {
+        bookingRef,
+        customerId: user.uid,
+        customerName: customerName.trim().slice(0, 120),
+        phoneNumber: normalized,
+        email: email.trim().slice(0, 160),
+        locationTown: locationTown.trim().slice(0, 120),
+        serviceId: selectedService.id,
+        serviceTitle: selectedService.title.slice(0, 140),
+        projectDescription: projectDescription.trim().slice(0, 2000),
+        preferredDate,
+        attachmentUrls,
+        status: 'pending',
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+      });
 
-        await setDoc(doc(db, 'notifications', `notif_${bookingId}`), {
-          userId: user.uid,
-          title: `Booking Request ${bookingRef}`,
-          message: `We received your request for ${selectedService.title}. Our team will respond with a quotation.`,
-          type: 'booking',
-          read: false,
-          linkPath: '/account',
-          createdAt: serverTimestamp(),
-        });
-      } catch (fsErr) {
-        handleFirestoreError(fsErr, OperationType.CREATE, `bookings/${bookingId}`);
-      }
+      // A notification failure must not make a successfully-created booking
+      // look unsuccessful or encourage the customer to submit it again.
+      await setDoc(doc(db, 'notifications', `notif_${bookingId}`), {
+        userId: user.uid,
+        title: `Booking Request ${bookingRef}`,
+        message: `We received your request for ${selectedService.title}. Our team will respond with a quotation.`,
+        type: 'booking',
+        read: false,
+        linkPath: '/account',
+        createdAt: serverTimestamp(),
+      }).catch((notificationError) => {
+        console.warn('Booking notification could not be created:', notificationError);
+      });
 
       const idToken = await user.getIdToken();
       if (email) {
@@ -163,7 +163,8 @@ export function ServicesView({ onNavigate }: ServicesViewProps) {
       setProjectDescription('');
       setFiles([]);
     } catch (err) {
-      setErrorMsg(err instanceof Error ? err.message : 'Unable to submit service booking.');
+      console.error('Service booking submission failed:', err);
+      setErrorMsg('We could not submit your booking. Please check your details and connection, then try again. If the problem continues, contact Stylah.');
     } finally {
       setSubmitting(false);
     }
@@ -407,10 +408,10 @@ export function ServicesView({ onNavigate }: ServicesViewProps) {
 
           <button
             type="submit"
-            disabled={submitting || !user || !selectedService}
+            disabled={submitting || catalogLoading || !selectedService}
             className="w-full min-h-[48px] rounded bg-[#a81825] text-white text-sm font-semibold hover:bg-[#820014] disabled:opacity-50 transition-colors"
           >
-            {submitting ? 'Uploading & Submitting...' : 'Submit Booking & Quotation Request'}
+            {submitting ? 'Uploading & Submitting...' : !user ? 'Sign In to Submit Booking' : 'Submit Booking & Quotation Request'}
           </button>
         </form>
       </div>
