@@ -104,6 +104,7 @@ export function AdminView() {
   const [auditLogs, setAuditLogs] = useState<AuditLog[]>([]);
   const [busyMsg, setBusyMsg] = useState('');
   const [errorBanner, setErrorBanner] = useState('');
+  const [savingCustomizer, setSavingCustomizer] = useState(false);
   const [uploadingKey, setUploadingKey] = useState<string | null>(null);
 
   // Storefront Customizer Form State
@@ -378,7 +379,10 @@ export function AdminView() {
   // --- Storefront Customizer & Settings ---
   const handleSaveCustomizer = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!isAdmin) return;
+    if (!isAdmin || savingCustomizer) return;
+    setSavingCustomizer(true);
+    setErrorBanner('');
+    setBusyMsg('Publishing storefront changes...');
     try {
       await setDoc(doc(db, 'settings', 'public'), {
         businessName: custBusinessName.trim().slice(0, 120) || BRAND_NAME,
@@ -410,7 +414,10 @@ export function AdminView() {
       );
       notifySuccess('Storefront branding, social links & settings saved live.');
     } catch (err) {
-      handleFirestoreError(err, OperationType.WRITE, 'settings/public');
+      console.error('Storefront publish failed:', err);
+      notifyError('Storefront changes could not be published. Check your connection and administrator access, then try again.');
+    } finally {
+      setSavingCustomizer(false);
     }
   };
 
@@ -1535,10 +1542,11 @@ export function AdminView() {
 
               <button
                 type="submit"
-                disabled={!isAdmin}
+                disabled={!isAdmin || savingCustomizer}
+                aria-busy={savingCustomizer}
                 className="min-h-[48px] px-6 rounded bg-[#a81825] text-white text-sm font-semibold hover:bg-[#820014] disabled:opacity-50"
               >
-                Publish Storefront Changes
+                {savingCustomizer ? 'Publishing Changes...' : 'Publish Storefront Changes'}
               </button>
             </form>
           )}
