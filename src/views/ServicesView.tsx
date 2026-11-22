@@ -407,7 +407,8 @@ export function ServicesView({ onNavigate }: ServicesViewProps) {
           {errorMsg && <p className="text-xs text-[#ba1a1a]">{errorMsg}</p>}
 
           <button
-            type="submit"
+            type={user ? "submit" : "button"}
+            onClick={() => { if (!user) onNavigate('account'); }}
             disabled={submitting || catalogLoading || !selectedService}
             className="w-full min-h-[48px] rounded bg-[#a81825] text-white text-sm font-semibold hover:bg-[#820014] disabled:opacity-50 transition-colors"
           >
