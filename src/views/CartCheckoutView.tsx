@@ -675,7 +675,7 @@ export function CartCheckoutView({ onNavigate }: CartCheckoutViewProps) {
 
             <button
               type="submit"
-              disabled={submitting || !user}
+              disabled={submitting}
               className={`w-full min-h-[48px] rounded text-white text-sm font-semibold transition-colors disabled:opacity-50 ${
                 paymentMethod === 'mpesa_stk'
                   ? 'bg-[#00a859] hover:bg-[#008e4b]'
@@ -684,6 +684,8 @@ export function CartCheckoutView({ onNavigate }: CartCheckoutViewProps) {
             >
               {submitting
                 ? 'Validating & Submitting Order...'
+                : !user
+                ? 'Sign In to Complete Checkout'
                 : paymentMethod === 'mpesa_stk'
                 ? `Pay via M-Pesa · ${formatKsh(grandTotalKsh)}`
                 : `Confirm Order · ${formatKsh(grandTotalKsh)}`}
